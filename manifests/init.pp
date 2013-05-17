@@ -52,20 +52,23 @@
 # === Examples
 #
 class wordpress (
-  $install_dir    = '/opt/wordpress',
-  $install_url    = 'http://wordpress.org',
-  $version        = '3.5',
-  $create_db      = true,
-  $create_db_user = true,
-  $db_name        = 'wordpress',
-  $db_host        = 'localhost',
-  $db_user        = 'wordpress',
-  $db_password    = 'password',
-  $wp_owner       = 'root',
-  $wp_group       = '0',
-  $wp_lang        = '',
-  $wp_plugin_dir  = 'DEFAULT'
-) {
+  $install_dir    = $wordpress::params::install_dir,
+  $install_url    = $wordpress::params::install_url,
+  $version        = $wordpress::params::version,
+  $create_db      = $wordpress::params::create_db,
+  $create_db_user = $wordpress::params::create_db_user,
+  $db_name        = $wordpress::params::db_name,
+  $db_host        = $wordpress::params::db_host,
+  $db_user        = $wordpress::params::db_user,
+  $db_password    = $wordpress::params::db_password,
+  $wp_owner       = $wordpress::params::wp_owner,
+  $wp_group       = $wordpress::params::wp_group,
+  $wp_lang        = $wordpress::params::wp_lang,
+  $wp_plugin_dir  = $wordpress::params::wp_plugin_dir
+) inherits wordpress::params {
+
+  Class['wordpress::app'] -> Class['wordpress::db']
+
   class { 'wordpress::app':
     install_dir   => $install_dir,
     install_url   => $install_url,
@@ -79,7 +82,8 @@ class wordpress (
     wp_lang       => $wp_lang,
     wp_plugin_dir => $wp_plugin_dir,
   }
-  -> class { 'wordpress::db':
+
+  class { 'wordpress::db':
     create_db      => $create_db,
     create_db_user => $create_db_user,
     db_name        => $db_name,
@@ -87,4 +91,5 @@ class wordpress (
     db_user        => $db_user,
     db_password    => $db_password,
   }
+
 }
