@@ -1,6 +1,8 @@
 # == Class: wordpress
 #
-# This module manages wordpress
+# This module manages wordpress configuration files and plugins.
+#
+# Database and web service management is left to other modules.
 #
 # === Parameters
 #
@@ -14,12 +16,6 @@
 #
 # [*version*]
 #   Specifies the version of wordpress to install. Default: 3.5
-#
-# [*create_db*]
-#   Specifies whether to create the db or not. Default: true
-#
-# [*create_db_user*]
-#   Specifies whether to create the db user or not. Default: true
 #
 # [*db_name*]
 #   Specifies the database name which the wordpress module should be configured
@@ -44,30 +40,68 @@
 # [*wp_lang*]
 #   WordPress Localized Language. Default: ''
 #
-#
 # [*wp_plugin_dir*]
 #   WordPress Plugin Directory. Full path, no trailing slash. Default: WordPress Default
-# === Requires
 #
-# === Examples
+# [*wp_allow_multisite*]
+#  Enable MultiSite mode. Default: `false`
+#
+# [*auto_setup*]
+#  Automatically setup the local admin user; automates the "Famous 5-Minute Setup". Default: `false`
+#
+# [*site_name*]
+#  The name of the wordpress site. Default: `WordPress`
+#
+# [*site_admin*]
+#  The name of the local admin user. Default: `admin`
+#
+# [*admin_pwd*]
+#  The password for the admin user. If not given WordPress will generate one
+#  and it isn't captured, so this option is strongly recomended. Default: ``
+#
+# [*admin_mail*]
+#  The email address for the admin user. If not specified the automatic setup
+#  will fail.
+#
+## Example Usage
+#---------------
+#
+#class { 'wordpress':
+#  install_dir    => '/var/www/myblog',
+#  plugin_dir     => '/var/www/myblog/plugins',
+#  version        => '3.5',
+#  db_name        => 'wpdb',
+#  db_host        => 'mysql.my.domain',
+#  db_user        => 'wordpressdb',
+#  db_password    => 'password',
+#  auto_setup     => true,
+#  site_name      => 'My Blog',
+#  site_admin     => 'admin',
+#  admin_pwd      => 'secret',
+#  admin_mail     => 'webmaster@my.domain',
+#  wp_owner       => 'www-data',
+#  wp_group       => '33',
+#}
 #
 class wordpress (
-  $install_dir    = $wordpress::params::install_dir,
-  $install_url    = $wordpress::params::install_url,
-  $version        = $wordpress::params::version,
-  $create_db      = $wordpress::params::create_db,
-  $create_db_user = $wordpress::params::create_db_user,
-  $db_name        = $wordpress::params::db_name,
-  $db_host        = $wordpress::params::db_host,
-  $db_user        = $wordpress::params::db_user,
-  $db_password    = $wordpress::params::db_password,
-  $wp_owner       = $wordpress::params::wp_owner,
-  $wp_group       = $wordpress::params::wp_group,
-  $wp_lang        = $wordpress::params::wp_lang,
-  $wp_plugin_dir  = $wordpress::params::wp_plugin_dir
-) inherits wordpress::params {
-
-  Class['wordpress::app'] -> Class['wordpress::db']
+  $version        = 'latest',
+  $install_dir    = '/opt/wordpress',
+  $install_url    = 'http://wordpress.org',
+  $db_name        = 'wordpress',
+  $db_host        = 'localhost',
+  $db_user        = 'wordpress',
+  $db_password    = 'password',
+  $wp_owner       = 'root',
+  $wp_group       = '0',
+  $wp_lang        = '',
+  $wp_plugin_dir  = 'DEFAULT',
+  $wp_allow_multisite   = false,
+  $auto_setup     = false,
+  $site_name      = 'WordPress',
+  $site_admin     = 'admin',
+  $admin_pwd      = '',
+  $admin_mail     = 'root@localhost', #Invalid acconding to Wordpress Validator
+) {
 
   class { 'wordpress::app':
     install_dir   => $install_dir,
@@ -81,15 +115,18 @@ class wordpress (
     wp_group      => $wp_group,
     wp_lang       => $wp_lang,
     wp_plugin_dir => $wp_plugin_dir,
+    wp_allow_multisite => $wp_allow_multisite,
   }
-
-  class { 'wordpress::db':
-    create_db      => $create_db,
-    create_db_user => $create_db_user,
-    db_name        => $db_name,
-    db_host        => $db_host,
-    db_user        => $db_user,
-    db_password    => $db_password,
+  if $auto_setup {
+    class { 'wordpress::app::setup':
+      wp_directory => $install_dir,
+      site_name    => $site_name,
+      site_admin   => $site_admin,
+      admin_pwd    => $admin_pwd,
+      admin_mail   => $admin_mail,
+      includes     => $install_add
+    }
+    Class['wordpress::app'] -> Class['wordpress::app::setup']
   }
 
 }
