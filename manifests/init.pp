@@ -124,7 +124,6 @@ class wordpress (
       site_admin   => $site_admin,
       admin_pwd    => $admin_pwd,
       admin_mail   => $admin_mail,
-      includes     => $install_add
     }
     Class['wordpress::app'] -> Class['wordpress::app::setup']
   }
