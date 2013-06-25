@@ -1,5 +1,5 @@
 name    'puppet-wordpress'
-version '0.3.1a'
+version '0.3.2'
 source 'https://github.com/seattle-biomed/puppet-wordpress'
 author 'Atom Powers'
 license 'Apache2'
