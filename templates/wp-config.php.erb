@@ -43,8 +43,8 @@ define('WP_DEBUG', false);
 /**
  * Modules loaded by Puppet Config
  */
-define('MULTISITE',<%= @wp_allow_multisite %>);
-<% if @wp_allow_multisite %>
+define('MULTISITE',<%= @wp_multisite %>);
+<% if @wp_multisite %>
 define('SUBDOMAIN_INSTALL',    <%= @wp_subdomain_install %>);
 define('DOMAIN_CURRENT_SITE',  <%= @wp_domain_current_site %> );
 define('PATH_CURRENT_SITE',    <%= @wp_path_current_site %>);
