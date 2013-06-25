@@ -103,7 +103,7 @@ class wordpress (
   $wp_multisite   = false,
   $wpmu_accel_redirect    = false,
   $wp_subdomain_install   = false,
-  $wp_domain_current_site = '',
+  $wp_domain_current_site = 'blog.sbri.org',
   $wp_path_current_site   = '/',
   $wp_site_id_current_site = 1,
   $wp_blog_id_current_site = 1,
