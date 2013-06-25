@@ -4,7 +4,11 @@ class wordpress::app (
   $version, $install_dir, $install_url,
   $db_name, $db_host, $db_user, $db_password,
   $wp_owner, $wp_group, $wp_lang,
-  $wp_plugin_dir, $wp_allow_multisite,
+  $wp_plugin_dir,
+  $wp_multisite, $wp_subdomain_install,
+  $wp_domain_current_site, $wp_path_current_site,
+  $wp_site_id_current_site, $wp_blog_id_current_site,
+  $wpmu_accel_redirect,
   $wget_package = $wordpress::params::wget_package
 ) inherits wordpress::params {
 
