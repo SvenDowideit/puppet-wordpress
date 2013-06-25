@@ -45,6 +45,7 @@ define wordpress::app::plugin (
     exec { "download-wordpress-plugin-${name}":
       command => "wget -nc ${url}/${file}",
       creates => "${plugin_dir_real}/${file}",
+      require => Exec['extract-wordpress-pkg'],
     }
     -> exec { "extract-wordpress-plugin-${name}":
       command => "unzip ./${file}",

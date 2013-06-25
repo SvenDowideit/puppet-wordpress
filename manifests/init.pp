@@ -95,12 +95,18 @@ class wordpress (
   $wp_group       = '0',
   $wp_lang        = '',
   $wp_plugin_dir  = 'DEFAULT',
-  $wp_allow_multisite   = false,
   $auto_setup     = false,
   $site_name      = 'WordPress',
   $site_admin     = 'admin',
   $admin_pwd      = '',
   $admin_mail     = 'root@localhost', #Invalid acconding to Wordpress Validator
+  $wp_multisite   = false,
+  $wpmu_accel_redirect    = false,
+  $wp_subdomain_install   = false,
+  $wp_domain_current_site = '',
+  $wp_path_current_site   = '/',
+  $wp_site_id_current_site = 1,
+  $wp_blog_id_current_site = 1,
 ) {
 
   class { 'wordpress::app':
@@ -115,7 +121,13 @@ class wordpress (
     wp_group      => $wp_group,
     wp_lang       => $wp_lang,
     wp_plugin_dir => $wp_plugin_dir,
-    wp_allow_multisite => $wp_allow_multisite,
+    wp_multisite  => $wp_multisite,
+    wpmu_accel_redirect     => $wpmu_accel_redirect,
+    wp_subdomain_install    => $wp_subdomain_install,
+    wp_domain_current_site  => $wp_domain_current_site,
+    wp_path_current_site    => $wp_path_current_site,
+    wp_site_id_current_site => $wp_site_id_current_site,
+    wp_blog_id_current_site => $wp_blog_id_current_site,
   }
   if $auto_setup {
     class { 'wordpress::app::setup':
