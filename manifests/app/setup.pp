@@ -38,7 +38,7 @@ class wordpress::app::setup (
   $post_values = "weblog_title=$site_name&user_name=$site_admin&admin_password=$admin_pwd&admin_password2=$admin_pwd&admin_email=$admin_mail"
   $post_page = 'http://localhost/wp-admin/install.php?step=2'
   exec { "wordpress-auto-install":
-    command     => "curl -d \'${post_values}\' ${post_page}",
+    command     => "/usr/bin/curl -d \'${post_values}\' ${post_page}",
     require     => [Package['curl'],Service['mysql'],Service['httpd']],
     refreshonly => true,
     logoutput   => true,
