@@ -19,7 +19,8 @@ Requires:
 
 - Database server is already installed and configured.
 - `database` resource type acts on installed database server.
-- Web serer is already installed and configured.
+- Web server is already installed and configured.
+- curl, wget, (unzip gets installed)
 
 ## Parameters
 
