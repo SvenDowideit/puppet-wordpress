@@ -20,6 +20,7 @@ Requires:
 - Database server is already installed and configured.
 - `database` resource type acts on installed database server.
 - Web server is already installed and configured (including php).
+- all the other wordpress pre-req's
 - curl, wget, (unzip gets installed)
 
 ## Parameters
