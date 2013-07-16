@@ -19,7 +19,7 @@ Requires:
 
 - Database server is already installed and configured.
 - `database` resource type acts on installed database server.
-- Web server is already installed and configured.
+- Web server is already installed and configured (including php).
 - curl, wget, (unzip gets installed)
 
 ## Parameters
